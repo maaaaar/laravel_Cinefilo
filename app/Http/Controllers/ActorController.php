@@ -2,83 +2,60 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Actor;
 use Illuminate\Http\Request;
 
 class ActorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    //cogemos los datos de la BD
+    public function index(Request $request)
     {
-        //
+
+        if ($request->has('search'))
+        {
+            $search = $request->input('search');
+            $actores = Actor::where('nombre', 'like', '%'.$search.'%')
+                            ->orderby('nombre')
+                            ->paginate(5);
+        }
+        else
+        {
+            $search = '';
+            $actores = Actor::orderby('nombre')->paginate(5);
+        }
+
+        $data['actores'] = $actores;
+        $data['search'] = $search;
+        return view('actor.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Model\Actor  $actor
-     * @return \Illuminate\Http\Response
-     */
     public function show(Actor $actor)
     {
-        //
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Model\Actor  $actor
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Actor $actor)
     {
-        //
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Model\Actor  $actor
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Actor $actor)
     {
-        //
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Model\Actor  $actor
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Actor $actor)
     {
-        //
+
     }
 }

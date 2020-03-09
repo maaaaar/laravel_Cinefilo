@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::resource('Actor', 'ActorController');
+Route::resource('/actor', 'ActorController');
