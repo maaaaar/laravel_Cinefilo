@@ -6,6 +6,13 @@
 
 @section('principal')
 
+{{-- añadimos boton para crear un actor --}}
+<div class="card mt-2">
+    <div class=" card-body">
+    <a href="{{ action('ActorController@create')}}" class="btn btn-primary">NUEVO ACTOR</a>
+    </div>
+</div>
+
 <div class="card mt-2">
     <div class="card-header">
         Lista actores
@@ -41,6 +48,18 @@
                         {{-- a partir del metodo del modelo podemos acceder a sexo desde actor  --}}
                         {{-- desde actor vamos a sexo y despues vamos a descripcion que son los datos que queremos mostrar --}}
                         <td> {{ $actor->sexo->descripcion }} </td>
+                        <td>
+                            <form action=" {{action('ActorController@edit', [$actor->dni]) }}" method="GET">
+                                <button type="submit" class="btn btn-secondary btn-sm">EDITAR</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action=" {{action('ActorController@destroy', [$actor->dni]) }}" method="POST">
+                               @method('delete')
+                               @csrf
+                                <button type="submit" class="btn btn-danger btn-sm">ELIMINAR</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
