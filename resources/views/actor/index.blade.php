@@ -14,7 +14,7 @@
 </div>
 
 <div class="card mt-2">
-    <div class="card-header">
+    <div class="card-header bg-dark text-white">
         Lista actores
     </div>
     <div class="card-body">

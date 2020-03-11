@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Actor;
+use App\Models\Sexo;
 use Illuminate\Http\Request;
 
 class ActorController extends Controller
@@ -32,11 +33,23 @@ class ActorController extends Controller
     public function create()
     {
         //mostrar
+        $sexos = Sexo::all();
+        $data['sexos'] = $sexos;
+
+        return view('actor.create', $data); //withImput para que el old funcione
     }
 
     public function store(Request $request)
     {
+        $actor = new Actor();
+        $actor->dni = $request->input('dni');
+        $actor->nombre = $request->input('nombre');
+        $actor->edad = $request->input('edad');
+        $actor->id_sexo = $request->input('sexo');
 
+        $actor->save();
+        //nos rediciona a donde queramos, en este caso en el metodo index
+        return redirect()->action('ActorController@index');
     }
 
     public function show(Actor $actor)
@@ -44,18 +57,34 @@ class ActorController extends Controller
 
     }
 
+    //para cargar los datos en el formulario de editar
     public function edit(Actor $actor)
     {
+        //le pasamos la lista de sexos
+        $sexos = Sexo::all();
 
+        $data['sexos'] = $sexos;
+        $data['actor'] = $actor;
+
+        return view('actor.edit', $data);
     }
 
+    //para guardar los canvios
     public function update(Request $request, Actor $actor)
     {
+        $actor->nombre = $request->input('nombre');
+        $actor->edad = $request->input('edad');
+        $actor->id_sexo = $request->input('sexo');
+
+        $actor->save();
+        //nos rediciona a donde queramos, en este caso en el metodo index
+        return redirect()->action('ActorController@index');
 
     }
 
     public function destroy(Actor $actor)
     {
-
+        $actor->delete();
+        return redirect()->action('ActorController@index');
     }
 }
