@@ -5,6 +5,10 @@
 @endsection
 
 @section('principal')
+
+{{-- para que nos salga el alert de los errores --}}
+    @include('partial.errores')
+
     <div class="card mt-2 border-dark">
         <div class="card-header bg-dark text-light">
             ACTOR

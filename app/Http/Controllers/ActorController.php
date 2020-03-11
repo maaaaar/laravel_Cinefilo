@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Actor;
 use App\Models\Sexo;
+use App\Classes\Utilitats;
+
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 class ActorController extends Controller
 {
@@ -47,7 +50,20 @@ class ActorController extends Controller
         $actor->edad = $request->input('edad');
         $actor->id_sexo = $request->input('sexo');
 
-        $actor->save();
+        try
+        {
+            $actor->save();
+        }
+        catch (QueryException $e)
+        {
+            $error = Utilitats::errorMessage($e);
+            //el nombre/codigo del error lo guardamos en la session flash
+            //la session flash solo dura una vez, cuando lo utilize se borra solo
+            $request->session()->flash('error', $error);
+            return redirect()->action('ActorController@create')->withImput(); //withImput para que nos muestre los datos que habian antes, va con el old de create.blade
+            //de esta manera si hay error vuelve al form de crear y nos muestra los valores que habian antes del error
+        }
+
         //nos rediciona a donde queramos, en este caso en el metodo index
         return redirect()->action('ActorController@index');
     }
