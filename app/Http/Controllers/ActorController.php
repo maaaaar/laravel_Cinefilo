@@ -92,7 +92,17 @@ class ActorController extends Controller
         $actor->edad = $request->input('edad');
         $actor->id_sexo = $request->input('sexo');
 
-        $actor->save();
+        try
+        {
+            $actor->save();
+        }
+        catch (QueryException $e)
+        {
+            $error = Utilitats::errorMessage($e);
+            $request->session()->flash('error', $error);
+            return redirect()->action('ActorController@edit')->withImput();
+        }
+
         //nos rediciona a donde queramos, en este caso en el metodo index
         return redirect()->action('ActorController@index');
 
