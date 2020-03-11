@@ -1,7 +1,7 @@
 @extends('templates.main')
 
 @section('titulo')
-    ACTORES
+    PELICULAS
 @endsection
 
 @section('principal')
@@ -9,21 +9,21 @@
 {{-- añadimos boton para crear un actor --}}
 <div class="card mt-2">
     <div class=" card-body">
-    <a href="{{ action('ActorController@create')}}" class="btn btn-secondary">NUEVO ACTOR</a>
+    <a href="{{ action('PeliculaController@create')}}" class="btn btn-secondary">NUEVA PELICULA</a>
     </div>
 </div>
 
 <div class="card mt-2">
     <div class="card-header bg-dark text-white">
-        Lista actores
+        Lista de peliculas
     </div>
     <div class="card-body">
 
-        <form action=" {{ action('ActorController@index') }} " method="GET" class="form-horizontal">
+        <form action=" {{ action('PeliculaController@index') }} " method="GET" class="form-horizontal">
             <div class="form-group row">
-                <label for="" class="col-1">Nombre </label>
+                <label for="" class="col-1">Titulo</label>
                 <div class="col-10">
-                <input type="text" class="form-control" name="search" id="search" value='{{$search}}'>
+                    <input type="text" class="form-control" name="search" id="search" value='{{$search}}'>
                 </div>
                 <button type="submit" class="btn btn-secondary btn-sm col-1">BUSCAR</button>
             </div>
@@ -33,28 +33,22 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>DNI</th>
-                    <th>Nombre</th>
-                    <th>Edad</th>
-                    <th>Sexo</th>
+                    <th>TITULO</th>
+                    <th>DIRECTOR</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($actores as $actor)
+                @foreach ($peliculas as $pelicula)
                     <tr>
-                        <td> {{ $actor->dni }} </td>
-                        <td> {{ $actor->nombre }} </td>
-                        <td> {{ $actor->edad }} </td>
-                        {{-- a partir del metodo del modelo podemos acceder a sexo desde actor  --}}
-                        {{-- desde actor vamos a sexo y despues vamos a descripcion que son los datos que queremos mostrar --}}
-                        <td> {{ $actor->sexo->descripcion }} </td>
+                        <td> {{ $pelicula->titulo }} </td>
+                        <td> {{ $pelicula->director}} </td>
                         <td>
-                            <form action=" {{action('ActorController@edit', [$actor->dni]) }}" method="GET">
+                            <form action=" {{action('PeliculaController@edit', [$pelicula->id_pelicula]) }}" method="GET">
                                 <button type="submit" class="btn btn-primary btn-sm">EDITAR</button>
                             </form>
                         </td>
                         <td>
-                            <form action=" {{action('ActorController@destroy', [$actor->dni]) }}" method="POST">
+                            <form action=" {{action('PeliculaController@destroy', [$pelicula->id_pelicula]) }}" method="POST">
                                @method('delete')
                                @csrf
                                 <button type="submit" class="btn btn-danger btn-sm">ELIMINAR</button>
@@ -66,7 +60,7 @@
         </table>
         {{-- para poder paginar es necessario esto--}}
         {{-- appends sirve para si cambias de pagina no se borre el valor que quieres buscar --}}
-        {{ $actores->appends(['search'=>$search])->links() }}
+        {{ $peliculas->appends(['search'=>$search])->links() }}
     </div>
 </div>
 @endsection

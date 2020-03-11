@@ -14,7 +14,6 @@ class ActorController extends Controller
     //cogemos los datos de la BD
     public function index(Request $request)
     {
-
         if ($request->has('search'))
         {
             $search = $request->input('search');

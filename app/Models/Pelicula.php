@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pelicula extends Model
 {
-    protected $table = 'actores';
+    protected $table = 'peliculas';
     protected $primaryKey = 'dni';
     public $incrementing = false; //porque el dni no es incremental
     protected $keyType = 'string';

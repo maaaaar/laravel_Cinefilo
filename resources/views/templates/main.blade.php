@@ -28,6 +28,9 @@
             <li class="nav-item ">
             <a class="nav-link text-primary" href="{{url('/actor')}}"> ACTORES </a>
             </li>
+            <li class="nav-item ">
+            <a class="nav-link text-primary" href="{{url('/pelicula')}}"> PELICULES </a>
+            </li>
         </ul>
     </nav>
 </body>

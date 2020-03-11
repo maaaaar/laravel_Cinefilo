@@ -3,81 +3,62 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pelicula;
+use App\Models\Tema;
+use App\Classes\Utilitats;
+
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 class PeliculaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->has('search'))
+        {
+            $search = $request->input('search');
+            $peliculas = Pelicula::where('titulo', 'like', '%'.$search.'%')
+                            ->orderby('titulo')
+                            ->paginate(5);
+        }
+        else
+        {
+            $search = '';
+            $peliculas = Pelicula::orderby('titulo')->paginate(5);
+        }
+
+        $data['peliculas'] = $peliculas;
+        $data['search'] = $search;
+        return view('pelicula.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        // $temas = Tema::all();
+        // $data['temas'] = $temas;
+
+        // return view('pelicula.create', $data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Model\Pelicula  $pelicula
-     * @return \Illuminate\Http\Response
-     */
     public function show(Pelicula $pelicula)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Model\Pelicula  $pelicula
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Pelicula $pelicula)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Model\Pelicula  $pelicula
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Pelicula $pelicula)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Model\Pelicula  $pelicula
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Pelicula $pelicula)
     {
         //
