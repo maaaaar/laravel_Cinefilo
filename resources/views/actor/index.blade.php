@@ -9,7 +9,7 @@
 {{-- añadimos boton para crear un actor --}}
 <div class="card mt-2">
     <div class=" card-body">
-    <a href="{{ action('ActorController@create')}}" class="btn btn-primary">NUEVO ACTOR</a>
+    <a href="{{ action('ActorController@create')}}" class="btn btn-secondary">NUEVO ACTOR</a>
     </div>
 </div>
 
@@ -50,7 +50,7 @@
                         <td> {{ $actor->sexo->descripcion }} </td>
                         <td>
                             <form action=" {{action('ActorController@edit', [$actor->dni]) }}" method="GET">
-                                <button type="submit" class="btn btn-secondary btn-sm">EDITAR</button>
+                                <button type="submit" class="btn btn-primary btn-sm">EDITAR</button>
                             </form>
                         </td>
                         <td>
