@@ -33,15 +33,44 @@ class PeliculaController extends Controller
 
     public function create()
     {
-        // $temas = Tema::all();
-        // $data['temas'] = $temas;
+        $temas = Tema::all();
+        $data['temas'] = $temas;
 
-        // return view('pelicula.create', $data);
+        return view('pelicula.create', $data);
     }
 
     public function store(Request $request)
     {
-        //
+        $pelicula = new Pelicula();
+        $pelicula->id_pelicula = $request->input('id_pelicula');
+        $pelicula->titulo = $request->input('titulo');
+        $pelicula->director = $request->input('director');
+        $temas = $request->input('temas');
+        foreach ($temas as $id)
+        {
+            $pelicula->temas()->attach($id);
+        }
+        // if ($request->input('temas')!=null)
+        // {
+        //     $vtemas = implode(',', $request->input('temas'));
+        // }
+
+        try
+        {
+            $pelicula->save();
+        }
+        catch (QueryException $e)
+        {
+            $error = Utilitats::errorMessage($e);
+            //el nombre/codigo del error lo guardamos en la session flash
+            //la session flash solo dura una vez, cuando lo utilize se borra solo
+            $request->session()->flash('error', $error);
+            return redirect()->action('PeliculaController@create')->withImput(); //withImput para que nos muestre los datos que habian antes, va con el old de create.blade
+            //de esta manera si hay error vuelve al form de crear y nos muestra los valores que habian antes del error
+        }
+
+        //nos rediciona a donde queramos, en este caso en el metodo index
+        return redirect()->action('PeliculaController@index');
     }
 
     public function show(Pelicula $pelicula)
@@ -51,16 +80,43 @@ class PeliculaController extends Controller
 
     public function edit(Pelicula $pelicula)
     {
-        //
+        //le pasamos la lista de temas
+        $temas = Tema::all();
+
+        $data['temas'] = $temas;
+        $data['pelicula'] = $pelicula;
+
+        return view('pelicula.edit', $data);
     }
 
     public function update(Request $request, Pelicula $pelicula)
     {
-        //
+        $pelicula->titulo = $request->input('titulo');
+        $pelicula->director = $request->input('director');
+        if ($request->input('temas')!=null)
+        {
+            $vroles = implode(',', $request->input('temas'));
+        }
+        //temas
+
+        try
+        {
+            $pelicula->save();
+        }
+        catch (QueryException $e)
+        {
+            $error = Utilitats::errorMessage($e);
+            $request->session()->flash('error', $error);
+            return redirect()->action('PeliculaController@edit')->withImput();
+        }
+
+        //nos rediciona a donde queramos, en este caso en el metodo index
+        return redirect()->action('PeliculaController@index');
     }
 
     public function destroy(Pelicula $pelicula)
     {
-        //
+        $pelicula->delete();
+        return redirect()->action('PeliculaController@index');
     }
 }
