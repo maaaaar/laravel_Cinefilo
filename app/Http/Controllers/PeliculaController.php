@@ -34,7 +34,7 @@ class PeliculaController extends Controller
     public function create()
     {
         $temas = Tema::all();
-        $data['temas'] = $temas;
+        $data['titulo'] = 'Crear pelicula';
 
         return view('pelicula.create', $data);
     }
@@ -42,21 +42,20 @@ class PeliculaController extends Controller
     public function store(Request $request)
     {
         $pelicula = new Pelicula();
-        $pelicula->id_pelicula = $request->input('id_pelicula');
         $pelicula->titulo = $request->input('titulo');
         $pelicula->director = $request->input('director');
-        $temas = $request->input('temas');
-        foreach ($temas as $id)
-        {
-            $pelicula->temas()->attach($id);
-        }
-        // if ($request->input('temas')!=null)
-        // {
-        //     $vtemas = implode(',', $request->input('temas'));
-        // }
 
         try
         {
+            $pelicula->save();
+            if ($request->input('temas')!=null)
+            {
+                $temas = $request->input('temas');
+                foreach ($temas as $id)
+                {
+                    $pelicula->temas()->attach($id);
+                }
+            }
             $pelicula->save();
         }
         catch (QueryException $e)
@@ -81,10 +80,9 @@ class PeliculaController extends Controller
     public function edit(Pelicula $pelicula)
     {
         //le pasamos la lista de temas
-        $temas = Tema::all();
-
-        $data['temas'] = $temas;
+        $data['temas'] = Tema::all();
         $data['pelicula'] = $pelicula;
+        $data['titulo'] = "Editar peliculas";
 
         return view('pelicula.edit', $data);
     }
@@ -93,14 +91,19 @@ class PeliculaController extends Controller
     {
         $pelicula->titulo = $request->input('titulo');
         $pelicula->director = $request->input('director');
-        if ($request->input('temas')!=null)
-        {
-            $vroles = implode(',', $request->input('temas'));
-        }
-        //temas
 
         try
         {
+            $pelicula->save();
+            $pelicula->temas()->detach();
+            if ($request->input('temas')!=null)
+            {
+                foreach ($request->input('temas') as $id)
+                {
+                    $tema = Tema::find($id);
+                    $pelicula->temas()->attach($tema->id_tema);
+                }
+            }
             $pelicula->save();
         }
         catch (QueryException $e)
@@ -114,9 +117,18 @@ class PeliculaController extends Controller
         return redirect()->action('PeliculaController@index');
     }
 
-    public function destroy(Pelicula $pelicula)
+    public function destroy(Request $request,Pelicula $pelicula)
     {
-        $pelicula->delete();
+        try
+        {
+            $pelicula->temas()->detach();
+            $pelicula->delete();
+        } catch (QueryException $e)
+        {
+            $error = Utilitats::errorMessage($e);
+            $request->session()->flash('error', $error);
+        }
+
         return redirect()->action('PeliculaController@index');
     }
 }

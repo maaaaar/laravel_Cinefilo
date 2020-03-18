@@ -38,15 +38,14 @@
                 <div class="form-group row">
                   <label for="cbxSexo" class="col-sm-2 col-form-label">TEMA</label>
                   <div class="col-sm-10">
-                    <select name="temasS[]" id="cdxTema" class="custom-select" multiple>
-                      @foreach ($temas as $tema)
-                        @if ($tema->id_tema == old('tema'))
-                          <option value="{{ $tema->id_tema }}" selected>{{ $tema->descripcion}}</option>
-                        @else
-                          <option value="{{ $tema->id_tema }}">{{ $tema->descripcion}}</option>
-                        @endif
-
-                      @endforeach
+                    <select multiple class="form-control col" name="temas[]" id="slcTemas">
+                        @foreach ($temas as $tema)
+                            @if (old("temas") != null && in_array($tema->id_tema, old("temas")))
+                                <option value="{{ $tema->id_tema }}" selected>{{ $tema->descripcion }}</option>
+                            @else
+                                <option value="{{ $tema->id_tema }}" >{{ $tema->descripcion }}</option>
+                             @endif
+                        @endforeach
                     </select>
                   </div>
                 </div>
