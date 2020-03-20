@@ -41,13 +41,13 @@
                   <div class="col-sm-10">
                     <select name="tema[]" id="tema" class="custom-select" multiple>
                       @foreach ($temas as $tema)
-                        @if ($tema->id_tema == $pelicula->id_tema)
-                          <option value="{{ $tema->id_tema }}" selected>{{ $tema->descripcion}}</option>
-                        @else
-                          <option value="{{ $tema->id_tema }}">{{ $tema->descripcion}}</option>
-                        @endif
+                            @if ($pelicula->id_tema != null && in_array($tema->id_tema, $pelicula->id_tema))
+                                <option value="{{ $tema->id_tema }}" selected>{{ $tema->descripcion }}</option>
+                            @else
+                                <option value="{{ $tema->id_tema }}" >{{ $tema->descripcion }}</option>
+                             @endif
+                        @endforeach
 
-                      @endforeach
                     </select>
                   </div>
                 </div>
