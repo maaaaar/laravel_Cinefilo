@@ -48,9 +48,9 @@ class PeliculaController extends Controller
         try
         {
             $pelicula->save();
-            if ($request->input('temas')!=null)
+            if ($request->input('tema')!=null)
             {
-                $temas = $request->input('temas');
+                $temas = $request->input('tema');
                 foreach ($temas as $id)
                 {
                     $pelicula->temas()->attach($id);
@@ -96,9 +96,9 @@ class PeliculaController extends Controller
         {
             $pelicula->save();
             $pelicula->temas()->detach();
-            if ($request->input('temas')!=null)
+            if ($request->input('tema')!=null)
             {
-                foreach ($request->input('temas') as $id)
+                foreach ($request->input('tema') as $id)
                 {
                     $tema = Tema::find($id);
                     $pelicula->temas()->attach($tema->id_tema);

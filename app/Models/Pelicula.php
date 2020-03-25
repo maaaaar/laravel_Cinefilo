@@ -16,6 +16,6 @@ class Pelicula extends Model
     // N/M una pelicula puede tener muchos temas
     public function temas()//tambla donde vamos
     {
-        return $this->belongsToMany('App\Models\Tema','temas_pel','id_tema', 'id_pelicula'); // (tabla relacionada,la tabla que se a creado a partir de las dos ,id de una tabla,id de la otra(los campos que hay en la tabla creada en la BD))
+        return $this->belongsToMany('App\Models\Tema','temas_pel','id_pelicula','id_tema'); // (tabla relacionada,la tabla que se a creado a partir de las dos ,id de una tabla,id de la otra(los campos que hay en la tabla creada en la BD))
     }
 }
