@@ -48,9 +48,9 @@ class PeliculaController extends Controller
         try
         {
             $pelicula->save();
-            if ($request->input('tema')!=null)
+            if ($request->input('temas')!=null)
             {
-                $temas = $request->input('tema');
+                $temas = $request->input('temas');
                 foreach ($temas as $id)
                 {
                     $pelicula->temas()->attach($id);
@@ -64,7 +64,7 @@ class PeliculaController extends Controller
             //el nombre/codigo del error lo guardamos en la session flash
             //la session flash solo dura una vez, cuando lo utilize se borra solo
             $request->session()->flash('error', $error);
-            return redirect()->action('PeliculaController@create')->withImput(); //withImput para que nos muestre los datos que habian antes, va con el old de create.blade
+            return redirect()->action('PeliculaController@create')->withInput(); //withImput para que nos muestre los datos que habian antes, va con el old de create.blade
             //de esta manera si hay error vuelve al form de crear y nos muestra los valores que habian antes del error
         }
 
